@@ -1,4 +1,5 @@
 import { configureStore, createSlice, nanoid } from "@reduxjs/toolkit";
+<<<<<<< HEAD
 import * as React from "react";
 import { useMemo, useRef, useState } from "react";
 import { FlatList, SafeAreaView, ScrollView, StyleSheet, useWindowDimensions, View } from "react-native";
@@ -9,6 +10,26 @@ import { Provider as ReduxProvider, useDispatch, useSelector } from "react-redux
 const uiSlice = createSlice({
   name: "ui",
   initialState: { darkMode: false, showBanner: true, notif: { visible: false, message: "", type: "", item: "" } },
+=======
+import * as Device from "expo-device"; // Native module via Expo
+import * as Haptics from "expo-haptics"; // Native module via Expo
+import { useMemo, useState } from "react";
+import { FlatList, Platform, SafeAreaView, ScrollView, StyleSheet, useWindowDimensions, View } from "react-native";
+import { Appbar, Avatar, Banner, Button, Card, Divider, MD3DarkTheme, MD3LightTheme, Provider as PaperProvider, Switch, Text, TextInput } from "react-native-paper";
+import { Provider as ReduxProvider, useDispatch, useSelector } from "react-redux";
+
+/********************
+ * Managing State with Redux
+ * 1) Introduction to Redux
+ * 2) Actions, reducers, store
+ * 3) Connecting components
+ ********************/
+
+// UI slice: theme + banners
+const uiSlice = createSlice({
+  name: "ui",
+  initialState: { darkMode: false, showBanner: true },
+>>>>>>> b09daf6ef393eb886303c8fe8410a5a8cd9fe8f2
   reducers: {
     toggleDarkMode(state) {
       state.darkMode = !state.darkMode;
@@ -16,6 +37,7 @@ const uiSlice = createSlice({
     dismissBanner(state) {
       state.showBanner = false;
     },
+<<<<<<< HEAD
     showNotif(state, action) {
       state.notif = {
         visible: true,
@@ -31,6 +53,13 @@ const uiSlice = createSlice({
 });
 
 // Todo slice
+=======
+  },
+});
+
+
+// Todo slice to demonstrate lists and immutable updates
+>>>>>>> b09daf6ef393eb886303c8fe8410a5a8cd9fe8f2
 const todosSlice = createSlice({
   name: "todos",
   initialState: { items: [] },
@@ -53,6 +82,7 @@ const todosSlice = createSlice({
     clearTodos(state) {
       state.items = [];
     },
+<<<<<<< HEAD
     removePendingTodos(state) {
       state.items = state.items.filter((x) => x.done);
     },
@@ -69,6 +99,13 @@ const todosSlice = createSlice({
 
 const { toggleDarkMode, dismissBanner, showNotif, hideNotif } = uiSlice.actions;
 const { addTodo, toggleTodo, removeTodo, clearTodos, editTodo } = todosSlice.actions;
+=======
+  },
+});
+
+const { toggleDarkMode, dismissBanner } = uiSlice.actions;
+const { addTodo, toggleTodo, removeTodo, clearTodos } = todosSlice.actions;
+>>>>>>> b09daf6ef393eb886303c8fe8410a5a8cd9fe8f2
 
 const store = configureStore({
   reducer: {
@@ -77,6 +114,13 @@ const store = configureStore({
   },
 });
 
+<<<<<<< HEAD
+=======
+/********************
+ * App Root
+ ********************/
+
+>>>>>>> b09daf6ef393eb886303c8fe8410a5a8cd9fe8f2
 export default function App() {
   return (
     <ReduxProvider store={store}>
@@ -90,13 +134,27 @@ function ThemedApp() {
   const theme = useMemo(() => (darkMode ? MD3DarkTheme : MD3LightTheme), [darkMode]);
   return (
     <PaperProvider theme={theme}>
+<<<<<<< HEAD
       <SafeAreaView style={styles.safeArea}>
+=======
+      <SafeAreaView style={{ flex: 1 }}>
+>>>>>>> b09daf6ef393eb886303c8fe8410a5a8cd9fe8f2
         <AppScaffold />
       </SafeAreaView>
     </PaperProvider>
   );
 }
 
+<<<<<<< HEAD
+=======
+/********************
+ * User Interface Design
+ * 1) Designing UIs for mobile
+ * 2) Responsive/adaptive
+ * 3) Best practices for mobile UI/UX (accessibility, touch targets, feedback)
+ ********************/
+
+>>>>>>> b09daf6ef393eb886303c8fe8410a5a8cd9fe8f2
 function AppScaffold() {
   const dispatch = useDispatch();
   const { width } = useWindowDimensions();
@@ -105,6 +163,7 @@ function AppScaffold() {
 
   return (
     <View style={[styles.container, isTablet && styles.containerTablet]}>
+<<<<<<< HEAD
       <View style={styles.header}>
         <View style={styles.headerBackground} />
         <View style={styles.headerContent}>
@@ -137,17 +196,52 @@ function AppScaffold() {
           <View style={isTablet ? styles.cardColumnTablet : styles.cardColumnMobile}>
             <DoneCard />
           </View>
+=======
+      <Appbar.Header>
+        <Appbar.Content title="Expo + Redux Demo" subtitle={`Running on ${Device.osName ?? "Unknown OS"}`} />
+        <DarkModeSwitch />
+      </Appbar.Header>
+
+      {showBanner && (
+        <Banner
+          visible
+          actions={[{ label: "Got it", onPress: () => dispatch(dismissBanner()) }]}
+          icon={({ size }) => (
+            <Avatar.Icon size={size} icon="information-outline" />
+          )}
+        >
+          This screen demonstrates Redux state, responsive layout, and native modules (Haptics, Device).
+        </Banner>
+      )}
+
+      <ScrollView
+        style={styles.content}
+        contentContainerStyle={[isTablet && styles.contentTablet, { paddingBottom: 24 }]}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={[styles.column, isTablet && styles.columnTablet]}>
+          <LibraryCard />
+        </View>
+        <View style={[styles.column, isTablet && styles.columnTablet]}>
+          <TodosCard />
+          <NativeModulesCard />
+>>>>>>> b09daf6ef393eb886303c8fe8410a5a8cd9fe8f2
         </View>
       </ScrollView>
 
       <Appbar style={styles.footer}>
         <Appbar.Action icon="github" accessibilityLabel="GitHub" onPress={() => {}} />
+<<<<<<< HEAD
         <Appbar.Content title="Footer" />
+=======
+        <Appbar.Content title="Footer" subtitle={Platform.select({ ios: "iOS", android: "Android", default: "Web" })} />
+>>>>>>> b09daf6ef393eb886303c8fe8410a5a8cd9fe8f2
       </Appbar>
     </View>
   );
 }
 
+<<<<<<< HEAD
 function NotificationBanner() {
   const dispatch = useDispatch();
   const notif = useSelector((s) => s.ui.notif);
@@ -202,12 +296,19 @@ function NotificationBanner() {
   );
 }
 
+=======
+>>>>>>> b09daf6ef393eb886303c8fe8410a5a8cd9fe8f2
 function DarkModeSwitch() {
   const dispatch = useDispatch();
   const darkMode = useSelector((s) => s.ui.darkMode);
   return (
+<<<<<<< HEAD
     <View style={styles.darkModeSwitch}>
       <Text accessibilityRole="header" style={styles.darkModeText}>{darkMode ? "Dark" : "Light"}</Text>
+=======
+    <View style={{ flexDirection: "row", alignItems: "center", paddingRight: 12 }}>
+      <Text accessibilityRole="header" style={{ marginRight: 8 }}>{darkMode ? "Dark" : "Light"}</Text>
+>>>>>>> b09daf6ef393eb886303c8fe8410a5a8cd9fe8f2
       <Switch
         value={darkMode}
         onValueChange={() => dispatch(toggleDarkMode())}
@@ -218,6 +319,7 @@ function DarkModeSwitch() {
   );
 }
 
+<<<<<<< HEAD
 function TodosCard() {
   const dispatch = useDispatch();
   const items = useSelector((s) => s.todos.items.filter((x) => !x.done));
@@ -260,11 +362,56 @@ function TodosCard() {
           </Button>
         </View>
         <Divider style={styles.divider} />
+=======
+/********************
+ * Working with External Libraries
+ * 1) Using third-party libs (React Native Paper for UI)
+ * 2) Popular libs showcase (Paper components)
+ * 3) Integrating native modules (expo-haptics, expo-device)
+ ********************/
+
+
+function TodosCard() {
+  const dispatch = useDispatch();
+  const items = useSelector((s) => s.todos.items);
+  const [title, setTitle] = useState("");
+  const { width } = useWindowDimensions();
+  const numColumns = width >= 900 ? 2 : 1; // responsive list
+
+  return (
+    <Card style={styles.card}>
+      <Card.Title title="Todos (Redux list)" subtitle="Responsive FlatList" left={(props) => <Avatar.Icon {...props} icon="check-circle-outline" />} />
+      <Card.Content>
+        <View style={{ flexDirection: "row", gap: 8 }}>
+          <TextInput
+            style={{ flex: 1 }}
+            label="What needs doing?"
+            value={title}
+            onChangeText={setTitle}
+            onSubmitEditing={() => {
+              if (!title.trim()) return;
+              dispatch(addTodo(title.trim()));
+              setTitle("");
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+            }}
+            returnKeyType="done"
+          />
+          <Button mode="contained" onPress={() => {
+            if (!title.trim()) return;
+            dispatch(addTodo(title.trim()));
+            setTitle("");
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+          }}>Add</Button>
+        </View>
+        <Divider style={{ marginVertical: 12 }} />
+
+>>>>>>> b09daf6ef393eb886303c8fe8410a5a8cd9fe8f2
         <FlatList
           data={items}
           key={numColumns}
           numColumns={numColumns}
           keyExtractor={(item) => item.id}
+<<<<<<< HEAD
           contentContainerStyle={styles.flatListContainer}
           renderItem={({ item }) =>
             editingId === item.id ? (
@@ -399,12 +546,33 @@ function DoneCard() {
           }}>
             Clear All
           </Button>
+=======
+          contentContainerStyle={{ gap: 8 }}
+          renderItem={({ item }) => (
+            <Card style={{ flex: 1, marginRight: numColumns > 1 ? 8 : 0 }}>
+              <Card.Title
+                title={item.title}
+                subtitle={new Date(item.createdAt).toLocaleString()}
+                left={(props) => <Avatar.Icon {...props} icon={item.done ? "check" : "circle-outline"} />}
+              />
+              <Card.Actions>
+                <Button onPress={() => dispatch(toggleTodo(item.id))}>{item.done ? "Undo" : "Done"}</Button>
+                <Button onPress={() => dispatch(removeTodo(item.id))} textColor="#d11">Remove</Button>
+              </Card.Actions>
+            </Card>
+          )}
+          ListEmptyComponent={<Text accessibilityLabel="Empty list">No todos yet. Add one above.</Text>}
+        />
+        {items.length > 0 && (
+          <Button style={{ marginTop: 8 }} onPress={() => dispatch(clearTodos())}>Clear All</Button>
+>>>>>>> b09daf6ef393eb886303c8fe8410a5a8cd9fe8f2
         )}
       </Card.Content>
     </Card>
   );
 }
 
+<<<<<<< HEAD
 const styles = StyleSheet.create({
   safeArea: { flex: 1 },
   container: { flex: 1, backgroundColor: "#6e5670ff" }, // light green
@@ -459,4 +627,26 @@ const styles = StyleSheet.create({
   darkModeSwitch: { flexDirection: "row", alignItems: "center", paddingRight: 12 },
   darkModeText: { marginRight: 8 },
   doneCard: { flex: 1, marginRight: 8 },
+=======
+function LibraryCard() {
+}
+
+function NativeModulesCard() {
+ 
+}
+
+/********************
+ * Styles — mobile‑first, adapt on tablets
+ ********************/
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: "transparent" },
+  containerTablet: { paddingHorizontal: 12 },
+  content: { flex: 1, padding: 12 },
+  contentTablet: { flexDirection: "row", gap: 12 },
+  column: { flex: 1 },
+  columnTablet: { flex: 1 },
+  card: { marginBottom: 12, borderRadius: 16, overflow: "hidden" },
+  footer: { justifyContent: "center" },
+>>>>>>> b09daf6ef393eb886303c8fe8410a5a8cd9fe8f2
 });
